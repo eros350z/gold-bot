@@ -235,12 +235,25 @@ def send_telegram(message):
 # ==========================================
 # وظائف الجدولة
 # ==========================================
+def is_weekday():
+    from datetime import datetime
+    import pytz
+    kuwait_tz = pytz.timezone(TIMEZONE)
+    now = datetime.now(kuwait_tz)
+    return now.weekday() < 5  # 0=Monday, 4=Friday
+
 def send_london():
+    if not is_weekday():
+        print("⏸️ الويك اند - لا إرسال")
+        return
     print("📤 إرسال تحليل لندن...")
     msg = build_london_message()
     send_telegram(msg)
 
 def send_ny():
+    if not is_weekday():
+        print("⏸️ الويك اند - لا إرسال")
+        return
     print("📤 إرسال تحليل نيويورك...")
     msg = build_ny_message()
     send_telegram(msg)
